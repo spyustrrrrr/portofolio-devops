@@ -8,10 +8,9 @@
       apt:
         update_cache: yes
 
-    - name: 2. Instal mesin Docker
-      apt:
-        name: docker.io
-        state: present
+    - name: 2. cek versi docker
+      command: docker --version
+      register: docker_info
 
     - name: 3. Tampilkan pesan sukses
       debug:
