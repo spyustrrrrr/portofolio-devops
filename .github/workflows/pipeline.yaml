@@ -48,6 +48,15 @@ jobs:
       - name: Ambil naskah dari repository
         uses: actions/checkout@v3
 
-      - name: Sebarkan Pasukan Pod Nginx
+      - name: 1. Bangun Server Kubernetes Asli (KinD) di dalam GitHub
+        uses: helm/kind-action@v1.10.0
+
+      - name: 2. Deploy Aplikasi ke Server Asli!
         run: |
-          kubectl apply -f aplikasi.yaml --dry-run=client
+          # Sekarang tanpa trik dry-run, karena servernya BENAR-BENAR ADA!
+          kubectl apply -f aplikasi.yaml
+          
+      - name: 3. Buktikan Pod Nginx Berhasil Hidup
+        run: |
+          sleep 10  # Tunggu 10 detik agar server bernapas
+          kubectl get pods
