@@ -1,0 +1,18 @@
+---
+- name: Simulasi Instalasi via Ansible
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: 1. Update sistem operasi
+      apt:
+        update_cache: yes
+
+    - name: 2. Instal mesin Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: 3. Tampilkan pesan sukses
+      debug:
+        msg: "Ansible berhasil menginstal Docker di GitHub Actions!"
