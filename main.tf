@@ -22,6 +22,6 @@ resource "docker_container" "web_server" {
   name  = "server-terraform-variabel"
   ports {
     internal = 80
-    external = var.port_eksternal_nginx
+    external = 8082
   }
 }
