@@ -1,0 +1,50 @@
+name: Rantai Otomatisasi Infrastruktur & Aplikasi
+
+# Kapan robot ini harus bekerja?
+on:
+  push:
+    branches:
+      - main  # Bekerja otomatis setiap ada perubahan kode di branch 'main'
+
+jobs:
+  # ==========================================
+  # TAHAP 1: TERRAFORM (Membangun Gedung Kosong)
+  # ==========================================
+  bangun_infrastruktur:
+    runs-on: ubuntu-latest  # Robot pekerja meminjam mesin Linux dari GitHub
+    steps:
+      - name: Ambil naskah dari repository
+        uses: actions/checkout@v3
+
+      - name: Siapkan dan Eksekusi Terraform
+        run: |
+          terraform init
+          terraform apply -auto-approve
+
+  # ==========================================
+  # TAHAP 2: ANSIBLE (Instalasi Mesin Kubernetes)
+  # ==========================================
+  konfigurasi_server:
+    needs: bangun_infrastruktur  # Syarat mutlak: Terraform harus beres duluan!
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ambil naskah dari repository
+        uses: actions/checkout@v3
+
+      - name: Jalankan Teknisi Ansible
+        run: |
+          ansible-playbook playbook.yaml
+
+  # ==========================================
+  # TAHAP 3: KUBERNETES (Deploy Aplikasi)
+  # ==========================================
+  deploy_aplikasi:
+    needs: konfigurasi_server    # Syarat mutlak: Ansible harus beres duluan!
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ambil naskah dari repository
+        uses: actions/checkout@v3
+
+      - name: Sebarkan Pasukan Pod Nginx
+        run: |
+          kubectl apply -f aplikasi.yaml
