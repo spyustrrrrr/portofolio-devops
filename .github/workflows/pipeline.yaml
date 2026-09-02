@@ -50,4 +50,4 @@ jobs:
 
       - name: Sebarkan Pasukan Pod Nginx
         run: |
-          kubectl apply -f aplikasi.yaml
+          kubectl apply -f aplikasi.yaml --dry-run=client
