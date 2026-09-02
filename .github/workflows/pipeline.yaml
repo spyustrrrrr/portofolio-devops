@@ -16,6 +16,9 @@ jobs:
       - name: Ambil naskah dari repository
         uses: actions/checkout@v3
 
+      - name: Instal Mesin Terraform
+	uses: hashicorp/setup-terraform@v3
+
       - name: Siapkan dan Eksekusi Terraform
         run: |
           terraform init
